@@ -36,4 +36,14 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation 'com.squareup.okhttp:okhttp:2.5.0'
+    implementation(group: 'com.mcpinsight.shield', name: 'shieldlibrary', version: 'latest', ext: 'aar')
+    //noinspection DuplicatePlatformClasses
+    api 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    implementation('io.jsonwebtoken:jjwt-orgjson:0.11.2') {
+        exclude group: 'org.json', module: 'json' //provided by Android natively
+    }
+    implementation 'org.java-websocket:Java-WebSocket:1.5.1'
 }

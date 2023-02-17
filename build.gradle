@@ -16,6 +16,13 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven {
+            url "http://172.104.45.33:8081/artifactory/libs-release-local"
+            credentials {
+                username = "fcc-novustech"
+                password = "AP7DHAYLgxBwmG54NAPprZUiYY5"
+            }
+        }
     }
 }
 
