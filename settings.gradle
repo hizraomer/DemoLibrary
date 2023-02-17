@@ -1,3 +1,2 @@
-include ':clientdemolibrary'
 include ':app'
 rootProject.name = "DemoLibrary"

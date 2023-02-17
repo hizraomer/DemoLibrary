@@ -1,4 +1,4 @@
-package com.example.clientdemolibrary;
+package com.example.demolibrary;
 
 import android.content.Context;
 import android.widget.Toast;
