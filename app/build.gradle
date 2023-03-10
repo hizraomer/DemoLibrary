@@ -1,5 +1,7 @@
 plugins {
     id 'com.android.library'
+    id 'com.jfrog.artifactory'
+    id 'maven-publish'
 }
 
 android {
@@ -46,4 +48,52 @@ dependencies {
         exclude group: 'org.json', module: 'json' //provided by Android natively
     }
     implementation 'org.java-websocket:Java-WebSocket:1.5.1'
+}
+def libraryGroupId = 'com.mcpinsight.demo'
+def libraryArtifactId = 'demolibrary'
+def libraryVersion = '0.0.2'
+
+publishing {
+    publications {
+        aar(MavenPublication) {
+            groupId libraryGroupId
+            version libraryVersion
+            artifactId libraryArtifactId
+
+            artifact("$buildDir/outputs/aar/app-release.aar")
+
+            pom.withXml {
+                // for dependencies and exclusions
+                def dependenciesNode = asNode().appendNode('dependencies')
+                def configurationNames = ["implementation", "api", "runtimeOnly","releaseImplementation"]
+                configurationNames.each { confName ->
+                    configurations[confName].allDependencies.each {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+}
+
+artifactory {
+    contextUrl = 'http://172.104.45.33:8081/artifactory'
+    publish {
+        repository {
+            repoKey = 'ext-release-local'
+
+            username = artifactory_username
+            password = artifactory_password
+        }
+        defaults {
+            publications('aar')
+            publishArtifacts = true
+
+            properties = ['qa.level': 'basic', 'q.os': 'android', 'dev.team': 'core']
+            publishPom = true
+        }
+    }
 }
